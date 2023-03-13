@@ -21,7 +21,7 @@ client.on('message', async message => {
     if (stopMessage !== null && stopMessage.createdAt >= userMessages.last().createdAt) {
       userMessages = userMessages.filter(msg => msg.createdAt > stopMessage.createdAt);
     }
-    let story = userMessages.filter(msg => !msg.content.toLowerCase().includes('!story')).array().reverse().reduce((acc, msg) => `${acc}${msg.content} `, ''); // add reverse()
+    let story = userMessages.filter(msg => !msg.content.toLowerCase().includes('!story')).array().reverse().reduce((acc, msg) => `${acc}${msg.content} `, '').toLowerCase(); // add toLowerCase()
     const channel = client.channels.get('836599878218022943');
     channel.send(story);
     outputSent = true;
