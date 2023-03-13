@@ -1,0 +1,10 @@
+{
+    "name": "mari-bercerita-bot",
+    "version": "1.0.0",
+    "description": "My Discord bot using Discord.js 11.6.4",
+    "main": "index.js",
+    "dependencies": {
+      "discord.js": "11.6.4"
+    }
+  }
+  
