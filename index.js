@@ -10,13 +10,13 @@ client.on('message', async message => {
     const messages = await message.channel.fetchMessages({ limit: 100 });
     let stopMessage = null;
     for (const msg of messages.array().reverse()) {
-      if (msg.content.toLowerCase().includes('stop')) {
+      if (msg.content.toLowerCase().includes('tamat') && !messages.some(m => m.createdAt > msg.createdAt && m.content.toLowerCase().includes('tamat'))) {
         stopMessage = msg;
         break;
       }
     }
     let userMessages = messages.filter(msg => !msg.content.toLowerCase().includes('!story'));
-    if (stopMessage !== null && stopMessage.createdAt > userMessages.last().createdAt) {
+    if (stopMessage !== null && stopMessage.createdAt >= userMessages.last().createdAt) {
       userMessages = userMessages.filter(msg => msg.createdAt > stopMessage.createdAt);
     }
     let story = userMessages.reduce((acc, msg) => `${msg.content}\n${acc}`, '');
@@ -24,7 +24,7 @@ client.on('message', async message => {
       const lastMessageId = messages.last().id;
       messages = await message.channel.fetchMessages({ limit: 100, before: lastMessageId });
       const moreUserMessages = messages.filter(msg => !msg.content.toLowerCase().includes('!story'));
-      if (stopMessage !== null && stopMessage.createdAt > moreUserMessages.last().createdAt) {
+      if (stopMessage !== null && stopMessage.createdAt >= moreUserMessages.last().createdAt) {
         userMessages = moreUserMessages.filter(msg => msg.createdAt > stopMessage.createdAt);
       }
       story = moreUserMessages.reduce((acc, msg) => `${msg.content}\n${acc}`, story);
